@@ -181,6 +181,8 @@ func (daemon *Daemon) containerAttach(c *container.Container, cfg *stream.Attach
 		} else {
 			logrus.Errorf("attach failed with error: %v", err)
 		}
+	} else {
+		daemon.LogContainerEvent(c, "detach")
 	}
 
 	return nil
