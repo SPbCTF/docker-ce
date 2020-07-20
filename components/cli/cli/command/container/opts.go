@@ -122,6 +122,7 @@ type containerOptions struct {
 	healthRetries      int
 	runtime            string
 	autoRemove         bool
+	stopOnDetach       bool
 	init               bool
 
 	Image string
@@ -191,6 +192,7 @@ func addFlags(flags *pflag.FlagSet) *containerOptions {
 	flags.StringVarP(&copts.user, "user", "u", "", "Username or UID (format: <name|uid>[:<group|gid>])")
 	flags.StringVarP(&copts.workingDir, "workdir", "w", "", "Working directory inside the container")
 	flags.BoolVar(&copts.autoRemove, "rm", false, "Automatically remove the container when it exits")
+	flags.BoolVar(&copts.stopOnDetach, "stop-on-detach", false, "Stop the container when detached")
 
 	// Security
 	flags.Var(&copts.capAdd, "cap-add", "Add Linux capabilities")
@@ -581,6 +583,7 @@ func parse(flags *pflag.FlagSet, copts *containerOptions, serverOS string) (*con
 		AttachStdin:     attachStdin,
 		AttachStdout:    attachStdout,
 		AttachStderr:    attachStderr,
+		StopOnDetach:    copts.stopOnDetach,
 		Env:             envVariables,
 		Cmd:             runCmd,
 		Image:           copts.Image,

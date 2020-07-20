@@ -178,11 +178,17 @@ func (daemon *Daemon) containerAttach(c *container.Container, cfg *stream.Attach
 	if err != nil {
 		if _, ok := errors.Cause(err).(term.EscapeError); ok || err == context.Canceled {
 			daemon.LogContainerEvent(c, "detach")
+			if c.Config.StopOnDetach {
+				daemon.containerStop(c, c.StopTimeout());
+			}
 		} else {
 			logrus.Errorf("attach failed with error: %v", err)
 		}
 	} else {
 		daemon.LogContainerEvent(c, "detach")
+		if c.Config.StopOnDetach {
+			daemon.containerStop(c, c.StopTimeout());
+		}
 	}
 
 	return nil
