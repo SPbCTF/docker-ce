@@ -860,7 +860,7 @@ func buildCreateEndpointOptions(c *container.Container, n libnetwork.Network, ep
 		createOptions = append(createOptions, libnetwork.CreateOptionService(svcCfg.Name, svcCfg.ID, net.ParseIP(vip), portConfigs, svcCfg.Aliases[n.ID()]))
 	}
 
-	if !containertypes.NetworkMode(n.Name()).IsUserDefined() {
+	if !containertypes.NetworkMode(n.Name()).IsUserDefined() || c.HostConfig.NoEmbeddedDNS {
 		createOptions = append(createOptions, libnetwork.CreateOptionDisableResolution())
 	}
 
