@@ -56,6 +56,7 @@ type containerOptions struct {
 	dns                opts.ListOpts
 	dnsSearch          opts.ListOpts
 	dnsOptions         opts.ListOpts
+	noEmbeddedDns      bool
 	extraHosts         opts.ListOpts
 	volumesFrom        opts.ListOpts
 	envFile            opts.ListOpts
@@ -210,6 +211,7 @@ func addFlags(flags *pflag.FlagSet) *containerOptions {
 	flags.Var(&copts.dnsOptions, "dns-option", "Set DNS options")
 	flags.MarkHidden("dns-opt")
 	flags.Var(&copts.dnsSearch, "dns-search", "Set custom DNS search domains")
+	flags.BoolVar(&copts.noEmbeddedDns, "no-embedded-dns", false, "Disable embedded DNS server 127.0.0.11")
 	flags.Var(&copts.expose, "expose", "Expose a port or a range of ports")
 	flags.StringVar(&copts.ipv4Address, "ip", "", "IPv4 address (e.g., 172.30.100.104)")
 	flags.StringVar(&copts.ipv6Address, "ip6", "", "IPv6 address (e.g., 2001:db8::33)")
@@ -618,6 +620,7 @@ func parse(flags *pflag.FlagSet, copts *containerOptions, serverOS string) (*con
 		DNS:            copts.dns.GetAllOrEmpty(),
 		DNSSearch:      copts.dnsSearch.GetAllOrEmpty(),
 		DNSOptions:     copts.dnsOptions.GetAllOrEmpty(),
+		NoEmbeddedDNS:  copts.noEmbeddedDns,
 		ExtraHosts:     copts.extraHosts.GetAll(),
 		VolumesFrom:    copts.volumesFrom.GetAll(),
 		IpcMode:        container.IpcMode(copts.ipcMode),

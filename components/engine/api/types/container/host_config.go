@@ -384,6 +384,7 @@ type HostConfig struct {
 	DNS             []string          `json:"Dns"`          // List of DNS server to lookup
 	DNSOptions      []string          `json:"DnsOptions"`   // List of DNSOption to look for
 	DNSSearch       []string          `json:"DnsSearch"`    // List of DNSSearch to look for
+	NoEmbeddedDNS   bool              // Disable embedded DNS server 127.0.0.11
 	ExtraHosts      []string          // List of extra hosts
 	GroupAdd        []string          // List of additional groups that the container process will run as
 	IpcMode         IpcMode           // IPC namespace to use for the container
